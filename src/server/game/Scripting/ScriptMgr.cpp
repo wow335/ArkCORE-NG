@@ -23,6 +23,7 @@
 #include "DBCStores.h"
 #include "ObjectMgr.h"
 #include "OutdoorPvPMgr.h"
+#include "sc_npc_teleport.h"
 #include "ScriptLoader.h"
 #include "ScriptSystem.h"
 #include "Transport.h"
@@ -187,7 +188,10 @@ void ScriptMgr::Initialize()
     uint32 oldMSTime = getMSTime();
 
     LoadDatabase();
-
+	
+	// Load TeleNPC2 - maybe not the best place to load it ...
+    LoadNpcTele();
+	   
     TC_LOG_INFO("server.loading", "Loading C++ scripts");
 
     FillSpellSummary();

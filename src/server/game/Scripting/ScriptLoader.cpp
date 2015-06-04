@@ -43,6 +43,8 @@ void AddSC_example_spell_scripts();
 void AddSC_holiday_spell_scripts();
 
 void AddSC_SmartSCripts();
+//TeleNPC2
+void AddSC_npc_teleport();
 
 //Commands
 void AddSC_account_commandscript();
@@ -1676,6 +1678,10 @@ void AddOutdoorPvPScripts()
 void AddBattlegroundScripts()
 {
 #ifdef SCRIPTS
+
+	// TeleNPC2
+	void AddSC_npc_teleport();
+
 #endif
 }
 
@@ -1688,6 +1694,9 @@ void AddCustomScripts()
 {
 #ifdef SCRIPTS
     /* This is where custom scripts should be added. */
-
+	
+    // TeleNPC2
+    AddSC_npc_teleport();
+	
 #endif
 }
