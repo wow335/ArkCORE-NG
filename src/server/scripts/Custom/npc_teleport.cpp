@@ -87,6 +87,8 @@ namespace
     // Display categories
     void AffichCat(Player * const player, Creature * const creature)
     {
+        uint8 loc = player->GetSession()->GetSessionDbcLocale();
+
         if (PageC[player] > 0)
             player->ADD_GOSSIP_ITEM(7, PREV_PAGE, GOSSIP_PREV_PAGEC, 0);
 
@@ -94,7 +96,7 @@ namespace
         for ( ; i < TabCatDest.size() && i < (NB_ITEM_PAGE * (PageC[player] + 1)); ++i)
         {
             if (TabCatDest[i].IsAllowedToTeleport(player))
-                player->ADD_GOSSIP_ITEM(7, TabCatDest[i].GetName(player->IsGameMaster()).c_str(), GOSSIP_SHOW_DEST, i);
+                player->ADD_GOSSIP_ITEM(7, TabCatDest[i].GetName(loc, player->IsGameMaster()).c_str(), GOSSIP_SHOW_DEST, i);
         }
 
         if (i < TabCatDest.size())
@@ -106,13 +108,19 @@ namespace
     // Display destination categories
     void AffichDest(Player * const player, Creature * const creature)
     {
+        uint8 loc = player->GetSession()->GetSessionDbcLocale();
+
         if (PageD[player] > 0)
             player->ADD_GOSSIP_ITEM(7, PREV_PAGE, GOSSIP_PREV_PAGED, 0);
 
         CatDest::VDest_t i (PageD[player] * NB_ITEM_PAGE);
         for ( ; i < TabCatDest[Cat[player]].size() && i < (NB_ITEM_PAGE * (PageD[player] + 1)); ++i)
         {
-            player->ADD_GOSSIP_ITEM(5, TabCatDest[Cat[player]].GetDest(i).m_name.c_str(), GOSSIP_TELEPORT, i);
+            std::string name = TabCatDest[Cat[player]].GetDest(i).m_name[loc];
+            if (name.length() == 0)
+                name = TabCatDest[Cat[player]].GetDest(i).m_name[0];
+
+            player->ADD_GOSSIP_ITEM(5, name.c_str(), GOSSIP_TELEPORT, i); 
         }
 
         if (i < TabCatDest[Cat[player]].size())
