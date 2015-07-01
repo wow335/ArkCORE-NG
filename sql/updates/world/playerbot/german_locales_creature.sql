@@ -1,4 +1,6 @@
 
+SET NAMES 'utf8';
+
 INSERT IGNORE INTO `locales_creature` (`entry`) SELECT `entry` FROM `creature_template`;
 
 update locales_creature set name_loc3="", femaleName_loc3="", subname_loc3="Magie Bot" where entry=70001;
