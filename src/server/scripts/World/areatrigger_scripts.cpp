@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  * Copyright (C) 2006-2009 ScriptDev2 <https://scriptdev2.svn.sourceforge.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -58,7 +58,7 @@ class AreaTrigger_at_coilfang_waterfall : public AreaTriggerScript
         {
         }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) OVERRIDE
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (GameObject* go = GetClosestGameObjectWithEntry(player, GO_COILFANG_WATERFALL, 35.0f))
                 if (go->getLootState() == GO_READY)
@@ -90,7 +90,7 @@ class AreaTrigger_at_legion_teleporter : public AreaTriggerScript
         {
         }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) OVERRIDE
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (player->IsAlive() && !player->IsInCombat())
             {
@@ -132,7 +132,7 @@ class AreaTrigger_at_stormwright_shelf : public AreaTriggerScript
         {
         }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) OVERRIDE
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (!player->IsDead() && player->GetQuestStatus(QUEST_STRENGTH_OF_THE_TEMPEST) == QUEST_STATUS_INCOMPLETE)
                 player->CastSpell(player, SPELL_CREATE_TRUE_POWER_OF_THE_TEMPEST, false);
@@ -160,7 +160,7 @@ class AreaTrigger_at_scent_larkorwi : public AreaTriggerScript
         {
         }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) OVERRIDE
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (!player->IsDead() && player->GetQuestStatus(QUEST_SCENT_OF_LARKORWI) == QUEST_STATUS_INCOMPLETE)
             {
@@ -191,7 +191,7 @@ class AreaTrigger_at_last_rites : public AreaTriggerScript
         {
         }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) OVERRIDE
+        bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             if (!(player->GetQuestStatus(QUEST_LAST_RITES) == QUEST_STATUS_INCOMPLETE ||
                 player->GetQuestStatus(QUEST_LAST_RITES) == QUEST_STATUS_COMPLETE ||
@@ -244,13 +244,14 @@ enum Waygate
     QUEST_MEETING_A_GREAT_ONE                   = 13956,
 };
 
+// 5046 5047
 class AreaTrigger_at_sholazar_waygate : public AreaTriggerScript
 {
     public:
 
         AreaTrigger_at_sholazar_waygate() : AreaTriggerScript("at_sholazar_waygate") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) OVERRIDE
+        bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             if (!player->IsDead() && (player->GetQuestStatus(QUEST_MEETING_A_GREAT_ONE) != QUEST_STATUS_NONE ||
                 (player->GetQuestStatus(QUEST_THE_MAKERS_OVERLOOK) == QUEST_STATUS_REWARDED && player->GetQuestStatus(QUEST_THE_MAKERS_PERCH) == QUEST_STATUS_REWARDED)))
@@ -282,12 +283,13 @@ enum NatsLanding
     NPC_LURKING_SHARK  = 23928
 };
 
+// 4752
 class AreaTrigger_at_nats_landing : public AreaTriggerScript
 {
     public:
         AreaTrigger_at_nats_landing() : AreaTriggerScript("at_nats_landing") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) OVERRIDE
+        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
         {
             if (!player->IsAlive() || !player->HasAura(SPELL_FISH_PASTE))
                 return false;
@@ -323,6 +325,7 @@ enum Brewfest
     AREATRIGGER_TALK_COOLDOWN   = 5, // in seconds
 };
 
+// 4820 4829
 class AreaTrigger_at_brewfest : public AreaTriggerScript
 {
     public:
@@ -332,7 +335,7 @@ class AreaTrigger_at_brewfest : public AreaTriggerScript
             _triggerTimes[AT_BREWFEST_DUROTAR] = _triggerTimes[AT_BREWFEST_DUN_MOROGH] = 0;
         }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) OVERRIDE
+        bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             uint32 triggerId = trigger->id;
             // Second trigger happened too early after first, skip for now
@@ -377,6 +380,7 @@ enum Area52Entrance
     AT_AREA_52_EAST       = 4422,
 };
 
+// 4422 4466 4471 4472
 class AreaTrigger_at_area_52_entrance : public AreaTriggerScript
 {
     public:
@@ -385,7 +389,7 @@ class AreaTrigger_at_area_52_entrance : public AreaTriggerScript
             _triggerTimes[AT_AREA_52_SOUTH] = _triggerTimes[AT_AREA_52_NORTH] = _triggerTimes[AT_AREA_52_WEST] = _triggerTimes[AT_AREA_52_EAST] = 0;
         }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) OVERRIDE
+        bool OnTrigger(Player* player, AreaTriggerEntry const* trigger) override
         {
             float x = 0.0f, y = 0.0f, z = 0.0f;
 
@@ -448,6 +452,7 @@ enum FrostgripsHollow
 Position const stormforgedMonitorPosition = {6963.95f, 45.65f, 818.71f, 4.948f};
 Position const stormforgedEradictorPosition = {6983.18f, 7.15f, 806.33f, 2.228f};
 
+// 5173
 class AreaTrigger_at_frostgrips_hollow : public AreaTriggerScript
 {
 public:
@@ -457,7 +462,7 @@ public:
         stormforgedEradictorGUID = 0;
     }
 
-    bool OnTrigger(Player* player, AreaTriggerEntry const* /* trigger */) OVERRIDE
+    bool OnTrigger(Player* player, AreaTriggerEntry const* /* trigger */) override
     {
         if (player->GetQuestStatus(QUEST_THE_LONESOME_WATCHER) != QUEST_STATUS_INCOMPLETE)
             return false;

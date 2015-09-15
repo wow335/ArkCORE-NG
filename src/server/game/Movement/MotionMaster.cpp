@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -382,6 +382,23 @@ void MotionMaster::MoveJump(float x, float y, float z, float speedXY, float spee
 
     Movement::MoveSplineInit init(_owner);
     init.MoveTo(x, y, z, false);
+    init.SetParabolic(max_height, 0);
+    init.SetVelocity(speedXY);
+    init.Launch();
+    Mutate(new EffectMovementGenerator(id), MOTION_SLOT_CONTROLLED);
+}
+
+// Perfect for Knockback visuals to specific locations - Unit maintains original orientation throughout movement
+void MotionMaster::MoveKnockTo(float x, float y, float z, float speedXY, float speedZ, uint32 id)
+{
+    TC_LOG_DEBUG("misc", "Unit (GUID: %u) knocked to point (X: %f Y: %f Z: %f)", _owner->GetGUIDLow(), x, y, z);
+
+    float moveTimeHalf = speedZ / Movement::gravity;
+    float max_height = -Movement::computeFallElevation(moveTimeHalf, false, -speedZ);
+
+    Movement::MoveSplineInit init(_owner);
+    init.MoveTo(x, y, z);
+    init.SetOrientationFixed(true);
     init.SetParabolic(max_height, 0);
     init.SetVelocity(speedXY);
     init.Launch();

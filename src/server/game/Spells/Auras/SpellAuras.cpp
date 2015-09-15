@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -1270,7 +1270,8 @@ void Aura::HandleAuraSpecificMods(AuraApplication const* aurApp, Unit* caster, b
                     case 64343: // Impact
                     {
                         // Reset cooldown on Fire Blast
-                        caster->ToPlayer()->RemoveSpellCooldown(2136, true);
+                        if (Player* player = caster->ToPlayer())
+                            player->RemoveSpellCooldown(2136, true);
                         break;
                     }
                     default:

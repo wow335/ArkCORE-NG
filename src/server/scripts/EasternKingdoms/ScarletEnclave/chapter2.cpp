@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -22,140 +22,6 @@
 #include "Player.h"
 #include "SpellInfo.h"
 #include "CreatureTextMgr.h"
-
-//How to win friends and influence enemies
-// texts signed for creature 28939 but used for 28939, 28940, 28610
-enum win_friends
-{
-    SAY_CRUSADER                      = 1,
-    SAY_PERSUADED1                    = 2,
-    SAY_PERSUADED2                    = 3,
-    SAY_PERSUADED3                    = 4,
-    SAY_PERSUADED4                    = 5,
-    SAY_PERSUADED5                    = 6,
-    SAY_PERSUADED6                    = 7,
-    SAY_PERSUADE_RAND                 = 8,
-    SPELL_PERSUASIVE_STRIKE           = 52781,
-    SPELL_THREAT_PULSE                = 58111,
-    QUEST_HOW_TO_WIN_FRIENDS          = 12720,
-};
-
-class npc_crusade_persuaded : public CreatureScript
-{
-public:
-    npc_crusade_persuaded() : CreatureScript("npc_crusade_persuaded") { }
-
-    CreatureAI* GetAI(Creature* creature) const OVERRIDE
-    {
-        return new npc_crusade_persuadedAI(creature);
-    }
-
-    struct npc_crusade_persuadedAI : public ScriptedAI
-    {
-        npc_crusade_persuadedAI(Creature* creature) : ScriptedAI(creature) { }
-
-        uint32 speechTimer;
-        uint32 speechCounter;
-        uint64 playerGUID;
-
-        void Reset() OVERRIDE
-        {
-            speechTimer = 0;
-            speechCounter = 0;
-            playerGUID = 0;
-            me->SetReactState(REACT_AGGRESSIVE);
-            me->RestoreFaction();
-        }
-
-        void SpellHit(Unit* caster, const SpellInfo* spell) OVERRIDE
-        {
-            if (spell->Id == SPELL_PERSUASIVE_STRIKE && caster->GetTypeId() == TYPEID_PLAYER && me->IsAlive() && !speechCounter)
-            {
-                if (Player* player = caster->ToPlayer())
-                {
-                    if (player->GetQuestStatus(QUEST_HOW_TO_WIN_FRIENDS) == QUEST_STATUS_INCOMPLETE)
-                    {
-                        playerGUID = player->GetGUID();
-                        speechTimer = 1000;
-                        speechCounter = 1;
-                        me->setFaction(player->getFaction());
-                        me->CombatStop(true);
-                        me->GetMotionMaster()->MoveIdle();
-                        me->SetReactState(REACT_PASSIVE);
-                        DoCastAOE(SPELL_THREAT_PULSE, true);
-
-                        sCreatureTextMgr->SendChat(me, SAY_PERSUADE_RAND, NULL, CHAT_MSG_ADDON, LANG_ADDON, TEXT_RANGE_NORMAL, 0, TEAM_OTHER, false, player);
-                        Talk(SAY_CRUSADER);
-                    }
-                }
-            }
-        }
-
-        void UpdateAI(uint32 diff) OVERRIDE
-        {
-            if (speechCounter)
-            {
-                if (speechTimer <= diff)
-                {
-                    Player* player = ObjectAccessor::GetPlayer(*me, playerGUID);
-                    if (!player)
-                    {
-                        EnterEvadeMode();
-                        return;
-                    }
-
-                    switch (speechCounter)
-                    {
-                        case 1:
-                            Talk(SAY_PERSUADED1);
-                            speechTimer = 8000;
-                            break;
-
-                        case 2:
-                            Talk(SAY_PERSUADED2);
-                            speechTimer = 8000;
-                            break;
-
-                        case 3:
-                            Talk(SAY_PERSUADED3);
-                            speechTimer = 8000;
-                            break;
-
-                        case 4:
-                            Talk(SAY_PERSUADED4);
-                            speechTimer = 8000;
-                            break;
-
-                        case 5:
-                            sCreatureTextMgr->SendChat(me, SAY_PERSUADED5, NULL, CHAT_MSG_ADDON, LANG_ADDON, TEXT_RANGE_NORMAL, 0, TEAM_OTHER, false, player);
-                            speechTimer = 8000;
-                            break;
-
-                        case 6:
-                            Talk(SAY_PERSUADED6);
-                            player->Kill(me);
-                            speechCounter = 0;
-                            player->GroupEventHappens(QUEST_HOW_TO_WIN_FRIENDS, me);
-                            return;
-                    }
-
-                    ++speechCounter;
-                    DoCastAOE(SPELL_THREAT_PULSE, true);
-
-                } else
-                    speechTimer -= diff;
-
-                return;
-            }
-
-            if (!UpdateVictim())
-                return;
-
-            DoMeleeAttackIfReady();
-        }
-    };
-
-};
 
 /*######
 ## npc_koltira_deathweaver
@@ -192,7 +58,7 @@ class npc_koltira_deathweaver : public CreatureScript
 public:
     npc_koltira_deathweaver() : CreatureScript("npc_koltira_deathweaver") { }
 
-    bool OnQuestAccept(Player* player, Creature* creature, const Quest* quest) OVERRIDE
+    bool OnQuestAccept(Player* player, Creature* creature, const Quest* quest) override
     {
         if (quest->GetQuestId() == QUEST_BREAKOUT)
         {
@@ -211,7 +77,7 @@ public:
             me->SetReactState(REACT_DEFENSIVE);
         }
 
-        void Reset() OVERRIDE
+        void Reset() override
         {
             if (!HasEscortState(STATE_ESCORT_ESCORTING))
             {
@@ -225,7 +91,7 @@ public:
             }
         }
 
-        void WaypointReached(uint32 waypointId) OVERRIDE
+        void WaypointReached(uint32 waypointId) override
         {
             switch (waypointId)
             {
@@ -259,7 +125,7 @@ public:
             }
         }
 
-        void JustSummoned(Creature* summoned) OVERRIDE
+        void JustSummoned(Creature* summoned) override
         {
             if (Player* player = GetPlayerForEscort())
                 summoned->AI()->AttackStart(player);
@@ -276,7 +142,7 @@ public:
                 me->SummonCreature(NPC_CRIMSON_ACOLYTE, 1642.329f, -6045.818f, 127.583f, 0.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 5000);
         }
 
-        void UpdateAI(uint32 uiDiff) OVERRIDE
+        void UpdateAI(uint32 uiDiff) override
         {
             npc_escortAI::UpdateAI(uiDiff);
 
@@ -348,7 +214,7 @@ public:
 
     };
 
-    CreatureAI* GetAI(Creature* creature) const OVERRIDE
+    CreatureAI* GetAI(Creature* creature) const override
     {
         return new npc_koltira_deathweaverAI(creature);
     }
@@ -369,7 +235,7 @@ class npc_scarlet_courier : public CreatureScript
 public:
     npc_scarlet_courier() : CreatureScript("npc_scarlet_courier") { }
 
-    CreatureAI* GetAI(Creature* creature) const OVERRIDE
+    CreatureAI* GetAI(Creature* creature) const override
     {
         return new npc_scarlet_courierAI(creature);
     }
@@ -381,21 +247,21 @@ public:
         uint32 uiStage;
         uint32 uiStage_timer;
 
-        void Reset() OVERRIDE
+        void Reset() override
         {
             me->Mount(14338); // not sure about this id
             uiStage = 1;
             uiStage_timer = 3000;
         }
 
-        void EnterCombat(Unit* /*who*/) OVERRIDE
+        void EnterCombat(Unit* /*who*/) override
         {
             Talk(SAY_TREE2);
             me->Dismount();
             uiStage = 0;
         }
 
-        void MovementInform(uint32 type, uint32 id) OVERRIDE
+        void MovementInform(uint32 type, uint32 id) override
         {
             if (type != POINT_MOTION_TYPE)
                 return;
@@ -404,7 +270,7 @@ public:
                 uiStage = 2;
         }
 
-        void UpdateAI(uint32 diff) OVERRIDE
+        void UpdateAI(uint32 diff) override
         {
             if (uiStage && !me->IsInCombat())
             {
@@ -461,7 +327,7 @@ class npc_high_inquisitor_valroth : public CreatureScript
 public:
     npc_high_inquisitor_valroth() : CreatureScript("npc_high_inquisitor_valroth") { }
 
-    CreatureAI* GetAI(Creature* creature) const OVERRIDE
+    CreatureAI* GetAI(Creature* creature) const override
     {
         return new npc_high_inquisitor_valrothAI(creature);
     }
@@ -474,20 +340,20 @@ public:
         uint32 uiInquisitor_Penance_timer;
         uint32 uiValroth_Smite_timer;
 
-        void Reset() OVERRIDE
+        void Reset() override
         {
             uiRenew_timer = 1000;
             uiInquisitor_Penance_timer = 2000;
             uiValroth_Smite_timer = 1000;
         }
 
-        void EnterCombat(Unit* who) OVERRIDE
+        void EnterCombat(Unit* who) override
         {
             Talk(SAY_VALROTH_AGGRO);
             DoCast(who, SPELL_VALROTH_SMITE);
         }
 
-        void UpdateAI(uint32 diff) OVERRIDE
+        void UpdateAI(uint32 diff) override
         {
             if (uiRenew_timer <= diff)
             {
@@ -519,7 +385,7 @@ public:
                 Talk(SAY_VALROTH_RAND);
         }
 
-        void JustDied(Unit* killer) OVERRIDE
+        void JustDied(Unit* killer) override
         {
             Talk(SAY_VALROTH_DEATH);
             killer->CastSpell(me, SPELL_SUMMON_VALROTH_REMAINS, true);
@@ -597,7 +463,7 @@ class npc_a_special_surprise : public CreatureScript
 public:
     npc_a_special_surprise() : CreatureScript("npc_a_special_surprise") { }
 
-    CreatureAI* GetAI(Creature* creature) const OVERRIDE
+    CreatureAI* GetAI(Creature* creature) const override
     {
         return new npc_a_special_surpriseAI(creature);
     }
@@ -610,7 +476,7 @@ public:
         uint32 ExecuteSpeech_Counter;
         uint64 PlayerGUID;
 
-        void Reset() OVERRIDE
+        void Reset() override
         {
             ExecuteSpeech_Timer = 0;
             ExecuteSpeech_Counter = 0;
@@ -668,7 +534,7 @@ public:
             return false;
         }
 
-        void MoveInLineOfSight(Unit* who) OVERRIDE
+        void MoveInLineOfSight(Unit* who) override
 
         {
             if (PlayerGUID || who->GetTypeId() != TYPEID_PLAYER || !who->IsWithinDist(me, INTERACTION_DISTANCE))
@@ -678,7 +544,7 @@ public:
                 PlayerGUID = who->GetGUID();
         }
 
-        void UpdateAI(uint32 diff) OVERRIDE
+        void UpdateAI(uint32 diff) override
         {
             if (PlayerGUID && !me->GetVictim() && me->IsAlive())
             {
@@ -1014,7 +880,6 @@ public:
 
 void AddSC_the_scarlet_enclave_c2()
 {
-    new npc_crusade_persuaded();
     new npc_scarlet_courier();
     new npc_koltira_deathweaver();
     new npc_high_inquisitor_valroth();

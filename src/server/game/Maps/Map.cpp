@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -2846,8 +2846,8 @@ bool InstanceMap::CanEnter(Player* player)
 {
     if (player->GetMapRef().getTarget() == this)
     {
-        TC_LOG_ERROR("maps", "InstanceMap::CanEnter - player %s(%u) already in map %d, %d, %d!", player->GetName().c_str(), player->GetGUIDLow(), GetId(), GetInstanceId(), GetSpawnMode());
-        ASSERT(false);
+        TC_LOG_ERROR("maps", "ASSERT Check InstanceMap::CanEnter - player %s(%u) already in map %d, %d", player->GetName().c_str(), player->GetGUIDLow(), GetId(), GetInstanceId());
+        //ASSERT(false);
         return false;
     }
 
@@ -3467,11 +3467,11 @@ void Map::SendZoneDynamicInfo(Player* player)
         player->SendDirectMessage(&data);
     }
 
-    if (uint32 overrideLight = itr->second.OverrideLightId)
+    if (uint32 OverrideLight = itr->second.OverrideLightId)
     {
         WorldPacket data(SMSG_OVERRIDE_LIGHT, 4 + 4 + 1);
         data << uint32(_defaultLight);
-        data << uint32(overrideLight);
+        data << uint32(OverrideLight);
         data << uint32(itr->second.LightFadeInTime);
         player->SendDirectMessage(&data);
     }

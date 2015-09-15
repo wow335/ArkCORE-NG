@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -222,7 +222,6 @@ void AddSC_boss_sulfuron();
 void AddSC_boss_majordomo();
 void AddSC_boss_ragnaros();
 void AddSC_instance_molten_core();
-void AddSC_instance_ragefire_chasm();        //Ragefire Chasm
 void AddSC_the_scarlet_enclave();            //Scarlet Enclave
 void AddSC_the_scarlet_enclave_c1();
 void AddSC_the_scarlet_enclave_c2();
@@ -312,7 +311,8 @@ void AddSC_boss_venoxis();
 void AddSC_boss_wushoolay();
 void AddSC_boss_zanzil();
 void AddSC_instance_zulgurub();
-void AddSC_gilneas_duskhaven();
+void AddSC_zone_gilneas_duskhaven();
+void AddSC_zone_gilneas_city();
 
 //void AddSC_alterac_mountains();
 void AddSC_arathi_highlands();
@@ -324,7 +324,6 @@ void AddSC_duskwood();
 void AddSC_eastern_plaguelands();
 void AddSC_elwynn_forest();
 void AddSC_eversong_woods();
-void AddSC_gilneas_city();
 void AddSC_ghostlands();
 void AddSC_hinterlands();
 void AddSC_ironforge();
@@ -341,8 +340,6 @@ void AddSC_undercity();
 void AddSC_western_plaguelands();
 void AddSC_westfall();
 void AddSC_wetlands();
-// Gilneas old
-void AddSC_gilneas();
 
 // Kalimdor
 void AddSC_blackfathom_deeps();              //Blackfathom Depths
@@ -468,6 +465,12 @@ void AddSC_instance_wailing_caverns();
 void AddSC_boss_zum_rah();                   //Zul'Farrak
 void AddSC_zulfarrak();
 void AddSC_instance_zulfarrak();
+void AddSC_instance_ragefire_chasm();       // Ragefire Chasm
+void AddSC_ragefire_chasm();
+void AddSC_boss_taragaman_the_hungerer();
+void AddSC_boss_oggleflint();
+void AddSC_boss_jergosh_the_invoker();
+void AddSC_boss_bazzalan();
 
 void AddSC_ashenvale();
 void AddSC_azshara();
@@ -491,6 +494,7 @@ void AddSC_thousand_needles();
 void AddSC_thunder_bluff();
 void AddSC_ungoro_crater();
 void AddSC_winterspring();
+
 
 // Northrend
 void AddSC_boss_slad_ran();
@@ -1061,7 +1065,6 @@ void AddEasternKingdomsScripts()
     AddSC_boss_majordomo();
     AddSC_boss_ragnaros();
     AddSC_instance_molten_core();
-    AddSC_instance_ragefire_chasm();        //Ragefire Chasm
     AddSC_the_scarlet_enclave();            //Scarlet Enclave
     AddSC_the_scarlet_enclave_c1();
     AddSC_the_scarlet_enclave_c2();
@@ -1163,7 +1166,6 @@ void AddEasternKingdomsScripts()
     AddSC_elwynn_forest();
     AddSC_eversong_woods();
     AddSC_ghostlands();
-    AddSC_gilneas_city();
     AddSC_hinterlands();
     AddSC_ironforge();
     AddSC_isle_of_queldanas();
@@ -1179,10 +1181,8 @@ void AddEasternKingdomsScripts()
     AddSC_western_plaguelands();
     AddSC_westfall();
     AddSC_wetlands();
-
-    // gilneas
-    AddSC_gilneas();
-    AddSC_gilneas_duskhaven();
+    AddSC_zone_gilneas_duskhaven();
+    AddSC_zone_gilneas_city();
 
 #endif
 }
@@ -1312,6 +1312,13 @@ void AddKalimdorScripts()
     AddSC_boss_zum_rah();                   //Zul'Farrak
     AddSC_zulfarrak();
     AddSC_instance_zulfarrak();
+    AddSC_instance_ragefire_chasm();        // Ragefire Chasm
+    AddSC_ragefire_chasm();
+    AddSC_boss_taragaman_the_hungerer();
+    AddSC_boss_oggleflint();
+    AddSC_boss_jergosh_the_invoker();
+    AddSC_boss_bazzalan();
+
     AddSC_ashenvale();
     AddSC_azshara();
     AddSC_azuremyst_isle();

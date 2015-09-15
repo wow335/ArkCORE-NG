@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -52,6 +52,7 @@ enum Adds
     NPC_DARK_FISSURE = 40784,
 };
 
+// 40765
 class boss_commander_ulthok : public CreatureScript
 {
     public:
@@ -161,6 +162,7 @@ class boss_commander_ulthok : public CreatureScript
 
 };
 
+// 40784
 class npc_ulthok_dark_fissure : public CreatureScript
 {
     public:
@@ -189,6 +191,7 @@ class npc_ulthok_dark_fissure : public CreatureScript
         };
 };
 
+// ???
 class at_tott_commander_ulthok : public AreaTriggerScript
 {
     public:

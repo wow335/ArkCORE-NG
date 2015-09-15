@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -1132,6 +1132,9 @@ void LootTemplate::LootGroup::AddEntry(LootStoreItem* item)
 // Rolls an item from the group, returns NULL if all miss their chances
 LootStoreItem const* LootTemplate::LootGroup::Roll(Loot& loot, uint16 lootMode) const
 {
+    if (lootMode == LOOT_FISHING_JUNK)
+        assert(false);
+
     LootStoreItemList possibleLoot = ExplicitlyChanced;
     possibleLoot.remove_if(LootGroupInvalidSelector(loot, lootMode));
 
@@ -1199,6 +1202,9 @@ void LootTemplate::LootGroup::CopyConditions(ConditionList /*conditions*/)
 // Rolls an item from the group (if any takes its chance) and adds the item to the loot
 void LootTemplate::LootGroup::Process(Loot& loot, uint16 lootMode) const
 {
+    if (lootMode == LOOT_FISHING_JUNK)
+        assert(false);
+
     if (LootStoreItem const* item = Roll(loot, lootMode))
         loot.AddItem(*item);
 }
@@ -1319,6 +1325,9 @@ void LootTemplate::CopyConditions(LootItem* li) const
 // Rolls for every item in the template and adds the rolled items the the loot
 void LootTemplate::Process(Loot& loot, bool rate, uint16 lootMode, uint8 groupId) const
 {
+    if (lootMode == LOOT_FISHING_JUNK)
+        assert(false);
+
     if (groupId)                                            // Group reference uses own processing of the group
     {
         if (groupId > Groups.size())
@@ -1609,6 +1618,7 @@ void LoadLootTemplates_Fishing()
 
     uint32 oldMSTime = getMSTime();
 
+    std::list<uint32> missingLootIds;
     LootIdSet lootIdSet;
     uint32 count = LootTemplates_Fishing.LoadAndCollectLootIds(lootIdSet);
 
@@ -1617,6 +1627,8 @@ void LoadLootTemplates_Fishing()
         if (AreaTableEntry const* areaEntry = sAreaStore.LookupEntry(i))
             if (lootIdSet.find(areaEntry->ID) != lootIdSet.end())
                 lootIdSet.erase(areaEntry->ID);
+            else
+                missingLootIds.push_back(areaEntry->ID);
 
     // output error for any still listed (not referenced from appropriate table) ids
     LootTemplates_Fishing.ReportUnusedIds(lootIdSet);
@@ -1666,7 +1678,7 @@ void LoadLootTemplates_Item()
     TC_LOG_INFO("server.loading", "Loading item loot templates...");
 
     uint32 oldMSTime = getMSTime();
-
+    uint32 itemsUsedBySpell[] = {5524, 7973, 36781, 45909, 52340, 54464};
     LootIdSet lootIdSet;
     uint32 count = LootTemplates_Item.LoadAndCollectLootIds(lootIdSet);
 
@@ -1675,7 +1687,14 @@ void LoadLootTemplates_Item()
     for (ItemTemplateContainer::const_iterator itr = its->begin(); itr != its->end(); ++itr)
         if (lootIdSet.find(itr->second.ItemId) != lootIdSet.end() && itr->second.Flags & ITEM_PROTO_FLAG_OPENABLE)
             lootIdSet.erase(itr->second.ItemId);
-
+        else
+        {
+            int len = sizeof(itemsUsedBySpell) / 4;
+            for (int i = 0; i<len; i++) {
+                if (itr->second.ItemId == itemsUsedBySpell[i])
+                    lootIdSet.erase(itr->second.ItemId);
+            }
+        }
     // output error for any still listed (not referenced from appropriate table) ids
     LootTemplates_Item.ReportUnusedIds(lootIdSet);
 

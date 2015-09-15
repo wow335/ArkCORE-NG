@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -106,6 +106,7 @@ const Position  twilightarcherPos[13] =
     {-481.352f, -477.21f, 280.714f, 3.72334f}
 };
 
+// 40177
 class boss_forgemaster_throngus : public CreatureScript
 {
     public:
@@ -233,8 +234,7 @@ class boss_forgemaster_throngus : public CreatureScript
         }
 };
 
-
-
+// ????
 class npc_throngus_fire_patch : public CreatureScript
 {
     public:
@@ -259,6 +259,7 @@ class npc_throngus_fire_patch : public CreatureScript
         };
 };
 
+// 75000
 class spell_throngus_pick_weapon : public SpellScriptLoader
 {
     public:

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -119,6 +119,7 @@ const Position spawnPos[5] =
     {-110.35f, 981.47f, 229.90f, 2.83f},
 };
 
+// 40792
 class npc_neptulon : public CreatureScript
 {
     public:
@@ -399,6 +400,7 @@ class npc_neptulon : public CreatureScript
         };        
 };
 
+// 44715
 class npc_vicious_mindslasher : public CreatureScript
 {
     public:
@@ -472,6 +474,7 @@ class npc_vicious_mindslasher : public CreatureScript
         };
 };
 
+// 44648
 class npc_unyielding_behemoth : public CreatureScript
 {
     public:
@@ -531,6 +534,7 @@ class npc_unyielding_behemoth : public CreatureScript
         };
 };
 
+// 44752
 class npc_faceless_sapper : public CreatureScript
 {
     public:
@@ -566,6 +570,7 @@ class npc_faceless_sapper : public CreatureScript
         };
 };
 
+// 44801 44834
 class npc_blight_of_ozumat : public CreatureScript
 {
     public:
@@ -594,6 +599,7 @@ class npc_blight_of_ozumat : public CreatureScript
         };
 };
 
+// ???
 class at_tott_ozumat : public AreaTriggerScript
 {
     public:

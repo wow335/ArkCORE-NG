@@ -1826,35 +1826,6 @@ class npc_twilight_war_mage : public CreatureScript
         };
 };
 
-// 40272
-class npc_ascended_rockbreaker_fissure : public CreatureScript
-{
-    public:
-
-        npc_ascended_rockbreaker_fissure() : CreatureScript("npc_ascended_rockbreaker_fissure"){ }
-
-        CreatureAI* GetAI(Creature* creature) const
-        {
-            return new npc_ascended_rockbreaker_fissureAI(creature);
-        }
-
-        struct npc_ascended_rockbreaker_fissureAI : public ScriptedAI
-        {
-            npc_ascended_rockbreaker_fissureAI(Creature* creature) : ScriptedAI(creature)
-            {
-                SetCombatMovement(false);
-                me->SetReactState(REACT_PASSIVE);
-            }
-
-            void Reset()
-            {
-                DoCast(me, SPELL_FISSURE_TRIGGER);
-            }
-
-            void UpdateAI(uint32 /*diff*/) { }
-        };
-};
-
 // 41045 (spawned by spell)
 class npc_crimsonborne_warlord_empowering_flames : public CreatureScript
 {
@@ -2021,7 +1992,6 @@ void AddSC_grim_batol()
     new npc_twilight_thundercaller();
     new npc_twilight_war_mage();
     new npc_twilight_wyrmcaller();
-    new npc_ascended_rockbreaker_fissure();
     new npc_crimsonborne_warlord_empowering_flames();
     new spell_twilight_enforcer_meat_grinder();
     new spell_twilight_shadow_weaver_shadow_weave();

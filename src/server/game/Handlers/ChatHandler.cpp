@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -312,11 +312,11 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
             }
 
             if (type == CHAT_MSG_SAY)
-                sender->Say(msg, lang);
+                sender->Say(msg, LANG_UNIVERSAL);
             else if (type == CHAT_MSG_EMOTE)
                 sender->TextEmote(msg);
             else if (type == CHAT_MSG_YELL)
-                sender->Yell(msg, lang);
+                sender->Yell(msg, LANG_UNIVERSAL);
             break;
         }
         case CHAT_MSG_WHISPER:
@@ -357,7 +357,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
                 (HasPermission(rbac::RBAC_PERM_CAN_FILTER_WHISPERS) && !sender->isAcceptWhispers() && !sender->IsInWhisperWhiteList(receiver->GetGUID())))
                 sender->AddWhisperWhiteList(receiver->GetGUID());
 
-            GetPlayer()->Whisper(msg, lang, receiver->GetGUID());
+            GetPlayer()->Whisper(msg, LANG_UNIVERSAL, receiver);
             break;
         }
         case CHAT_MSG_PARTY:

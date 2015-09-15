@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -1649,7 +1649,6 @@ class Unit : public WorldObject
         bool IsLevitating() const { return m_movementInfo.HasMovementFlag(MOVEMENTFLAG_DISABLE_GRAVITY); }
         bool IsWalking() const { return m_movementInfo.HasMovementFlag(MOVEMENTFLAG_WALKING); }
         bool SetWalk(bool enable);
-        bool SetRun(bool enable);
         bool SetDisableGravity(bool disable, bool packetOnly = false);
         bool SetFall(bool enable);
         bool SetSwim(bool enable);
@@ -2220,6 +2219,17 @@ class Unit : public WorldObject
         uint32 GetDamageTakenInPastSecs (uint32 secs);
         void ResetDamageDoneInPastSecs (uint32 secs);
         void ResetHealingDoneInPastSecs (uint32 secs);
+
+        virtual void Talk(std::string const& text, ChatMsg msgType, Language language, float textRange, WorldObject const* target);
+        virtual void Say(std::string const& text, Language language, WorldObject const* target = nullptr);
+        virtual void Yell(std::string const& text, Language language, WorldObject const* target = nullptr);
+        virtual void TextEmote(std::string const& text, WorldObject const* target = nullptr, bool isBossEmote = false);
+        virtual void Whisper(std::string const& text, Language language, Player* target, bool isBossWhisper = false);
+        void Talk(uint32 textId, ChatMsg msgType, float textRange, WorldObject const* target);
+        void Say(uint32 textId, WorldObject const* target = nullptr);
+        void Yell(uint32 textId, WorldObject const* target = nullptr);
+        void TextEmote(uint32 textId, WorldObject const* target = nullptr, bool isBossEmote = false);
+        void Whisper(uint32 textId, Player* target, bool isBossWhisper = false);
 
     protected:
         explicit Unit (bool isWorldObject);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * This file is NOT free software. Third-party users can NOT redistribute 
  * it or modify it. If you find it, you are either hacking something, or very 
@@ -16,6 +16,7 @@ enum Says
     SAY_INTRO_HEROIC = 1
 };
 
+// 49427 npc_nefarian_helper_heroic
 class npc_nefarian_helper_heroic : public CreatureScript
 {
 public:
@@ -49,6 +50,7 @@ public:
     };
 };
 
+// 49580
 class npc_nefarian_yeller : public CreatureScript // 49580
 {
 public:

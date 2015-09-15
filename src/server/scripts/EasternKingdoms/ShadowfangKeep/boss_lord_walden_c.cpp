@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * This file is NOT free software. Third-party users can NOT redistribute 
  * it or modify it. If you find it, you are either hacking something, or very 
@@ -42,10 +42,8 @@ public:
 
     struct boss_lord_waldenAI : public BossAI
     {
-        boss_lord_waldenAI(Creature* creature) : BossAI(creature, DATA_LORD_WALDEN)
+        boss_lord_waldenAI(Creature* creature) : BossAI(creature, BOSS_LORD_WALDEN)
         {
-            me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
-            me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
             pInstance = creature->GetInstanceScript();
         }
 
@@ -55,19 +53,21 @@ public:
 
         InstanceScript *pInstance;
 
-        void Reset()
+        void Reset() override
         {
             ConjureMixtureTimer = 9000;
             IceShardsTimer = 16000;
+            me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
+            me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
 
             if (IsHeroic())
                 ToxicCoagulantTimer = 11000;
 
             if (pInstance)
-                pInstance->SetData(DATA_LORD_WALDEN_EVENT, NOT_STARTED);
+                pInstance->SetData(BOSS_LORD_WALDEN, NOT_STARTED);
         }
 
-        void KilledUnit(Unit* /*who*/)
+        void KilledUnit(Unit* /*who*/) override
         {
             switch(urand(0,1))
             {
@@ -76,24 +76,24 @@ public:
             }
         }
 
-        void EnterCombat(Unit* /*who*/)
+        void EnterCombat(Unit* /*who*/) override
         {
             Talk(SAY_AGGRO);
 
             if (pInstance)
-                pInstance->SetData(DATA_LORD_WALDEN_EVENT, IN_PROGRESS);
+                pInstance->SetData(BOSS_LORD_WALDEN, IN_PROGRESS);
         }
 
-        void JustDied(Unit* /*pKiller*/)
+        void JustDied(Unit* /*pKiller*/) override
         {
             //me->SummonCreature(BOSS_COMMANDER_ULTHOK, 59.185f, 802.251f, 805.730f, 0, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 8640000);
             Talk(SAY_DEATH);
 
             if (pInstance)
-                pInstance->SetData(DATA_LORD_WALDEN_EVENT, DONE);
+                pInstance->SetData(BOSS_LORD_WALDEN, DONE);
         }
 
-		void UpdateAI(uint32 diff) OVERRIDE
+		void UpdateAI(uint32 diff) override
         {
             if (!UpdateVictim())
                 return;
@@ -129,10 +129,11 @@ public:
 
     CreatureAI* GetAI(Creature *creature) const
     {
-        return new boss_lord_waldenAI (creature);
+        return GetShadowfangKeepAI<boss_lord_waldenAI>(creature);
     }
 };
 
+// 50439 50522 
 class npc_mystery_toxin : public CreatureScript
 {
 public:

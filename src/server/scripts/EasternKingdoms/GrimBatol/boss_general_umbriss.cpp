@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -71,6 +71,7 @@ const Position troggPos[2]=
     {-702.22f, -450.9f, 268.77f, 1.34f}
 };
 
+// 39625
 class boss_general_umbriss : public CreatureScript
 {
     public:
@@ -235,6 +236,7 @@ class boss_general_umbriss : public CreatureScript
 
 };
 
+// 39984
 class npc_malignant_trogg : public CreatureScript
 {
     public:
@@ -296,6 +298,7 @@ class npc_malignant_trogg : public CreatureScript
         };
 };
 
+// 45467
 class npc_umbriss_trogg_dweller : public CreatureScript
 {
     public:

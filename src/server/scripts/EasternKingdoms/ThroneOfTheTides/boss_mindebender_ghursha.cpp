@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -83,6 +83,7 @@ enum Adds
     NPC_MIND_FOG        = 40861,
 };
 
+// 40825
 class boss_erunak_stonespeaker : public CreatureScript
 {
     public:
@@ -219,6 +220,7 @@ class boss_erunak_stonespeaker : public CreatureScript
         };
 };
 
+// 40788
 class boss_mindbender_ghursha : public CreatureScript
 {
     public:
@@ -342,6 +344,7 @@ class boss_mindbender_ghursha : public CreatureScript
         };
 };
 
+// 45469
 class npc_erunak_earth_shards : public CreatureScript
 {
     public:
@@ -379,6 +382,7 @@ class npc_erunak_earth_shards : public CreatureScript
         };
 };
 
+// 40861
 class npc_ghursha_mind_fog : public CreatureScript
 {
     public:

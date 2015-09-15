@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -1343,13 +1343,13 @@ class Player : public Unit, public GridObject<Player>
         PhaseMgr& GetPhaseMgr() { return phaseMgr; }
 
         /// Handles said message in regular chat based on declared language and in config pre-defined Range.
-        void Say(std::string const& text, const uint32 language);
+        void Say(std::string const& text, Language language, WorldObject const* = nullptr) override;
         /// Handles yelled message in regular chat based on declared language and in config pre-defined Range.
-        void Yell(std::string const& text, const uint32 language);
+        void Yell(std::string const& text, Language language, WorldObject const* = nullptr) override;
         /// Outputs an universal text which is supposed to be an action.
-        void TextEmote(std::string const& text);
+        void TextEmote(std::string const& text, WorldObject const* = nullptr, bool = false) override;
         /// Handles whispers from Addons and players based on sender, receiver's guid and language.
-        void Whisper(std::string const& text, const uint32 language, uint64 receiver);
+        void Whisper(std::string const& text, Language language, Player* receiver, bool = false) override;
         void WhisperAddon(std::string const& text, std::string const& prefix, Player* receiver);
 
         /*********************************************************/
@@ -1716,7 +1716,7 @@ class Player : public Unit, public GridObject<Player>
         Unit* GetSelectedUnit() const;
         Player* GetSelectedPlayer() const;
 
-        void SetTarget(uint64 /*guid*/) OVERRIDE { } /// Used for serverside target changes, does not apply to players
+        void SetTarget(uint64 /*guid*/) override { } /// Used for serverside target changes, does not apply to players
         void SetSelection(uint64 guid) { SetUInt64Value(UNIT_FIELD_TARGET, guid); }
         uint64 GetSelection() const { return GetUInt64Value(UNIT_FIELD_TARGET); }
 
@@ -1999,7 +1999,7 @@ class Player : public Unit, public GridObject<Player>
         void UpdateMastery();
         bool CanUseMastery() const;
 
-        void CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, bool addTotalPct, float& minDamage, float& maxDamage) OVERRIDE;
+        void CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, bool addTotalPct, float& minDamage, float& maxDamage) override;
 
         inline void RecalculateRating(CombatRating cr) { ApplyRatingMod(cr, 0, true);}
         float GetMeleeCritFromAgility();

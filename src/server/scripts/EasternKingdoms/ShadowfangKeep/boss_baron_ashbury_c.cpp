@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * This file is NOT free software. Third-party users can NOT redistribute 
  * it or modify it. If you find it, you are either hacking something, or very 
@@ -17,41 +17,39 @@ SDCategory: Shadowfang Keep
 #include "ScriptedCreature.h"
 #include "shadowfang_keep.h"
 
-enum Spells
-{
-    /// Boss
-    SPELL_PAIN_AND_SUFFERING        = 93581, // N/H - 1st. 5500 - every 20 sec.
-    SPELL_ASPHYXIATE                = 93423, // N/H - 1st. 20000 - every 45 secs.
-    SPELL_STAY_OF_EXECUTION         = 93468, // N/H - 1.5 sec after SPELL_ASPHYXIATE
-    SPELL_DARK_ARCHANGEL_FORM       = 93757, // H only - at. 20%
-    SPELL_DARK_ARCHANGEL_VISUAL     = 93766,
-    SPELL_CALAMITY                  = 93812, // H only - at. 20%
-    SPELL_WRACKING_PAIN             = 93720, // H only - 1st. 13000 - every 25 sec.
-};
-
-enum Yells
-{
-    SAY_AGGRO                   = 0,
-    SAY_ASPHYXIATE_CAST         = 1,
-    SAY_STAY_OF_EXECUTION_CAST  = 2,
-    SAY_DARK_ARCHANGEL_CAST     = 3,
-    SAY_KILL_1                  = 4,
-    SAY_KILL_2                  = 5,
-    SAY_DEATH                   = 6
-};
-
 class boss_baron_ashbury : public CreatureScript
 {
 public:
     boss_baron_ashbury() : CreatureScript("boss_baron_ashbury") { }
 
+    enum Spells
+    {
+        /// Boss
+        SPELL_PAIN_AND_SUFFERING = 93581, // N/H - 1st. 5500 - every 20 sec.
+        SPELL_ASPHYXIATE = 93423, // N/H - 1st. 20000 - every 45 secs.
+        SPELL_STAY_OF_EXECUTION = 93468, // N/H - 1.5 sec after SPELL_ASPHYXIATE
+        SPELL_DARK_ARCHANGEL_FORM = 93757, // H only - at. 20%
+        SPELL_DARK_ARCHANGEL_VISUAL = 93766,
+        SPELL_CALAMITY = 93812, // H only - at. 20%
+        SPELL_WRACKING_PAIN = 93720, // H only - 1st. 13000 - every 25 sec.
+    };
+
+    enum Yells
+    {
+        SAY_AGGRO = 0,
+        SAY_ASPHYXIATE_CAST = 1,
+        SAY_STAY_OF_EXECUTION_CAST = 2,
+        SAY_DARK_ARCHANGEL_CAST = 3,
+        SAY_KILL_1 = 4,
+        SAY_KILL_2 = 5,
+        SAY_DEATH = 6
+    };
+
     struct boss_baron_ashburyAI : public BossAI
     {
-        boss_baron_ashburyAI(Creature* creature) : BossAI(creature, DATA_BARON_ASHBURY)
+        boss_baron_ashburyAI(Creature* creature) : BossAI(creature, BOSS_BARON_ASHBURY)
         {
-            me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
-            me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
-            pInstance = creature->GetInstanceScript();
+            m_instance = creature->GetInstanceScript();
         }
 
         uint32 PainAndSufferingTimer;
@@ -60,11 +58,11 @@ public:
         uint32 WrackingPainTimer;
         uint32 DarkArchangelTimer;
 
-        InstanceScript *pInstance;
+        InstanceScript *m_instance;
 
         bool Phased, Asphyxiate, Angel, Achievement;
 
-        void Reset()
+        void Reset() override
         {
             Phased = false;
             Asphyxiate = false;
@@ -74,6 +72,8 @@ public:
             PainAndSufferingTimer = 5500;
             AsphyxiateTimer = 15000;
 
+            me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
+            me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
             me->RemoveAurasDueToSpell(SPELL_DARK_ARCHANGEL_FORM);
             me->RemoveAurasDueToSpell(SPELL_DARK_ARCHANGEL_VISUAL);
 
@@ -83,11 +83,19 @@ public:
                 Achievement = true;
             }
 
-            if (pInstance)
-                pInstance->SetData(DATA_BARON_ASHBURY_EVENT, NOT_STARTED);
+            if (m_instance)
+            {
+                m_instance->SetData(BOSS_BARON_ASHBURY, NOT_STARTED);
+                if (GameObject* door = ObjectAccessor::GetGameObject(*me, m_instance->GetData64(DATA_PRISON_DOOR1))) 
+                    door->SetGoState(GO_STATE_READY);
+                if (GameObject* door = ObjectAccessor::GetGameObject(*me, m_instance->GetData64(DATA_PRISON_DOOR2)))
+                    door->SetGoState(GO_STATE_READY);
+                if (GameObject* door = ObjectAccessor::GetGameObject(*me, m_instance->GetData64(DATA_PRISON_DOOR3)))
+                    door->SetGoState(GO_STATE_READY);
+            }
         }
 
-        void SpellHit(Unit* hitter, SpellInfo const* spell)
+        void SpellHit(Unit* hitter, SpellInfo const* spell) override
         {
             if (!hitter || !spell)
                 return;
@@ -98,7 +106,7 @@ public:
             Achievement = false;
         }
 
-        void KilledUnit(Unit* /*who*/)
+        void KilledUnit(Unit* /*who*/) override
         {
             switch(urand(0,1))
             {
@@ -107,23 +115,23 @@ public:
             }
         }
 
-		void EnterCombat(Unit* /*who*/) OVERRIDE
+		void EnterCombat(Unit* /*who*/) override
         {
             Talk(SAY_AGGRO);
 
-            if (pInstance)
-                pInstance->SetData(DATA_BARON_ASHBURY_EVENT, IN_PROGRESS);
+            if (m_instance)
+                m_instance->SetData(BOSS_BARON_ASHBURY, IN_PROGRESS);
         }
 
-		void JustDied(Unit* /*pKiller*/) OVERRIDE 
+		void JustDied(Unit* /*pKiller*/) override 
         {
             Talk(SAY_DEATH);
 
-            if (pInstance)
-                pInstance->SetData(DATA_BARON_ASHBURY_EVENT, DONE);
+            if (m_instance)
+                m_instance->SetData(BOSS_BARON_ASHBURY, DONE);
         }
 
-        void UpdateAI(uint32 diff) OVERRIDE
+        void UpdateAI(uint32 diff) override
         {
             if (!UpdateVictim())
                 return;
@@ -187,7 +195,7 @@ public:
 
     CreatureAI* GetAI(Creature *creature) const
     {
-        return new boss_baron_ashburyAI (creature);
+        return GetShadowfangKeepAI<boss_baron_ashburyAI>(creature);
     }
 };
 

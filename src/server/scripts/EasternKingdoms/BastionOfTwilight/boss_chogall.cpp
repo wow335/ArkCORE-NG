@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * Script 99% done. TODO:
  * - Fix falling through floor.
@@ -226,6 +226,7 @@ NOTES:
     Flame / Shadow Orders rotation is made through different time of periodic trigger application. Phase 2 hits -> triggers are removed.
 */
 
+// 43324
 class boss_chogall : public CreatureScript
 {
 public:

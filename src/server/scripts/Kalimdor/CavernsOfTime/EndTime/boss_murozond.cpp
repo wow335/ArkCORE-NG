@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * Script 95% done. TODO:
  * - Live Testing needed.
@@ -45,6 +45,7 @@ enum Events
 {
 };
 
+// 54432
 class boss_murozond : public CreatureScript
 {
     public:

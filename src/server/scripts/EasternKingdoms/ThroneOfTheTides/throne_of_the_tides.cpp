@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -113,6 +113,7 @@ const Position teleporterPos[2] =
     {-14.72f, 796.57f, 808.12f, 1.99f}, // upper
 };
 
+// 51391 51395
 class npc_throne_of_the_tides_teleporter : public CreatureScript
 {
     public:
@@ -216,6 +217,7 @@ class npc_lady_nazjar_event : public CreatureScript
         };
 };
 
+// 203199
 class go_totd_defense_system : public GameObjectScript
 {
 public:

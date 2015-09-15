@@ -1,6 +1,6 @@
 /*
  *
-* Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+* Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
 * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
  *
@@ -135,7 +135,7 @@ public:
 
 
 
-void AddSC_gilneas_duskhaven()
+void AddSC_zone_gilneas_duskhaven()
 {	
     new npc_lord_godfrey_36170();
     new npc_krennan_aranas_36331();

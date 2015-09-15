@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2011-2014 ArkCORE <http://www.arkania.net/>
+ * Copyright (C) 2011-2015 ArkCORE <http://www.arkania.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -130,6 +130,7 @@ const Position eggPos[23]    =
     {-751.01f, -886.38f, 234.87f, 3.27f}
 };
 
+// 40484
 class boss_erudax : public CreatureScript
 {
     public:
@@ -276,6 +277,7 @@ class boss_erudax : public CreatureScript
         };
 };
 
+// 39392
 class npc_erudax_faceless_corruptor : public CreatureScript
 {
     public:
@@ -354,6 +356,7 @@ class npc_erudax_faceless_corruptor : public CreatureScript
         };
 };
 
+// 40486
 class npc_alexstrasza_egg : public CreatureScript
 {
 public:
@@ -392,6 +395,7 @@ public:
     };
 };
 
+// 40567
 class npc_shadow_gale_stalker : public CreatureScript
 {
 public:
@@ -416,6 +420,7 @@ public:
     };
 };
 
+// 39388
 class npc_erudax_twilight_hatchling : public CreatureScript
 {
 public:
@@ -462,6 +467,7 @@ public:
     };
 };
 
+// 75664
 class spell_erudax_shadow_gale: public SpellScriptLoader
 {
     public:
